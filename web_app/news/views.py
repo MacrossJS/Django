@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Articles
-from .forms import ArticlesForm
+from .forms import ArticlesForm, ArticlesUpdateForm
 from django.views.generic import DetailView, UpdateView, DeleteView
 
 
@@ -17,7 +17,7 @@ class NewsDetailView(DetailView):
 
 class NewsUpdateView(UpdateView):
     model = Articles
-    template_name = 'news/create.html'
+    template_name = 'news/update.html'
     form_class = ArticlesForm
 
 
@@ -43,3 +43,20 @@ def create(request):
         'error': error
     }
     return render(request, 'news/create.html', data)
+
+
+def update(request):
+    error = ''
+    if request.method == 'POST':
+        update_form = ArticlesUpdateForm(request.POST)
+        if update_form.is_valid():
+            update_form.save()
+            return redirect('news_home')
+        else:
+            error = 'Форма заполнена не верно'
+    update_form = ArticlesUpdateForm
+    data = {
+        'form': update_form,
+        'error': error
+    }
+    return render(request, 'news/update.html', data)

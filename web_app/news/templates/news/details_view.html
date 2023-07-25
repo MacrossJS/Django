@@ -6,6 +6,9 @@
     <div class="features">
         <h1>{{ article.title }}</h1>
         <p>{{ article.date }}</p>
+        {% if article.date_edited %}
+            <p>Отредактировано: {{ article.date_edited }}</p>
+        {% endif %}
         <p>{{ article.full_text }}</p>
         <a href="{% url 'news-update' article.id %}" class="btn btn-info">Редактировать</a>
         <a href="{% url 'news-delete' article.id %}" class="btn btn-danger">Удалить</a>
